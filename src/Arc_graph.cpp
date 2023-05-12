@@ -1,4 +1,3 @@
-
 #include <vector>
 #include "IGraph.h"
 
@@ -26,7 +25,9 @@ public:
     }
 
     void AddEdge(int from, int to) override {
-        arcs.push_back(from, to);
+        if (from >= 0 && from < VerticesCount() && to >= 0 && to < VerticesCount()) {
+            arcs.push_back(from, to);
+        }
     }
 
 
