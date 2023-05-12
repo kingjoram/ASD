@@ -1,6 +1,8 @@
 #ifndef SRC_IGRAPH_H_
 #define SRC_IGRAPH_H_
 
+#include <vector>
+
 struct IGraph {
     virtual ~IGraph() {}
 
