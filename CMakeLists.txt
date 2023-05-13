@@ -6,14 +6,8 @@ project(HW1)
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/googletest" "googletest")
 
-add_executable(Main tests/main.cpp src/List_graph.cpp src/Arc_graph.cpp src/Matrix_graph.cpp  src/Set_graph.cpp src/Test_graph.cpp)
 add_executable(Tests tests/TestList.cpp src/List_graph.cpp src/Arc_graph.cpp src/Matrix_graph.cpp  src/Set_graph.cpp src/Test_graph.cpp)
 
-
-target_include_directories(
-	Main PRIVATE 
-	"${CMAKE_CURRENT_SOURCE_DIR}/include"
-)
 
 target_include_directories(
 	Tests PRIVATE 
