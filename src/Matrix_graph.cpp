@@ -3,7 +3,7 @@
 #include "IGraph.h"
 
 
-struct MatrixGraph {
+struct MatrixGraph : public IGraph  {
 public:
     ~MatrixGraph() {
     

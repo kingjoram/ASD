@@ -2,7 +2,7 @@
 #include <cassert>
 #include "IGraph.h"
 
-struct ListGraph {
+struct ListGraph : public IGraph {
 public:
     ListGraph(int size) {
         adjacencyLists(size);
