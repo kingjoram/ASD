@@ -11,7 +11,8 @@ add_executable(Tests tests/TestList.cpp
 		     src/List_graph.cpp
 		     src/Arc_graph.cpp
 		     src/Matrix_graph.cpp 
-		     src/Set_graph.cpp)
+		     src/Set_graph.cpp
+			 src/Test_graph.cpp)
 
 
 target_include_directories(
