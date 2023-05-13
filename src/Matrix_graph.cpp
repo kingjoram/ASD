@@ -1,4 +1,5 @@
 #include <vector>
+#include <cassert>
 #include "IGraph.h"
 
 
@@ -8,7 +9,7 @@ public:
     
     }
 
-    MatrixGraph(const int verticesCount) {
+    MatrixGraph(int verticesCount) {
         matrix.resize(verticesCount);
         for (int i = 0; i < verticesCount ++i) {
             matrix[i].resize(verticesCount, 0);
@@ -32,9 +33,10 @@ public:
 
 
     void AddEdge(int from, int to) override {
-        if (from >= 0 && from < VerticesCount() && to >= 0 && to < VerticesCount()) {
-            matrix[from][to] = 1;
-        }
+        assert(0 <= from && from < matrix.size());
+        assert(0 <= to && to < matrix.size());
+
+        matrix[from][to] = 1;
     }
 
 
@@ -45,6 +47,8 @@ public:
 
 
     std::vector<int> GetNextVertices(int vertex) const override {
+        assert(0 <= vertex && vertex < matrix.size());
+
         std::vector<int> nextVertices;
 
         for (i = 0; i < matrix.size(); ++i) {
@@ -57,6 +61,8 @@ public:
     }
 
     std::vector<int> GetPrevVertices(int vertex) const override {
+        assert(0 <= vertex && vertex < matrix.size());
+
         std::vector<int> nextVertices;
 
         for (i = 0; i < matrix.size(); ++i) {

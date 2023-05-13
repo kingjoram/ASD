@@ -1,4 +1,5 @@
 #include <vector>
+#include <cassert>
 #include "IGraph.h"
 
 
@@ -25,9 +26,10 @@ public:
     }
 
     void AddEdge(int from, int to) override {
-        if (from >= 0 && from < VerticesCount() && to >= 0 && to < VerticesCount()) {
-            arcs.push_back(from, to);
-        }
+        assert(0 <= from && from < verticesCount);
+        assert(0 <= to && to < verticesCount);
+
+        arcs.push_back(from, to);
     }
 
 
@@ -37,8 +39,9 @@ public:
 
 
     std::vector<int> GetNextVertices(int vertex) const override {
-        std::vector<int> nextVerices;
+        assert(0 <= vertex && vertex < verticesCount);
 
+        std::vector<int> nextVerices;
 
         for (int i = 0; i < arcs.size(); ++i) {
             if (arcs[i].first == vertex) {
@@ -50,6 +53,8 @@ public:
     }
 
     std::vector<int> GetPrevVertices(int vertex) const override {
+        assert(0 <= vertex && vertex < verticesCount);
+
         std::vector<int> prevVerices;
 
         for (int i = 0; i < arcs.size(); ++i) {
