@@ -1,80 +1,74 @@
 #include <vector>
 #include <cassert>
-#include "IGraph.h"
+#include "matrix_graph.h"
 
 
-struct MatrixGraph : public IGraph  {
-public:
-    ~MatrixGraph() {
+MatrixGraph::~MatrixGraph() {
     
+}
+
+MatrixGraph::MatrixGraph(int verticesCount) {
+    matrix.resize(verticesCount);
+    for (int i = 0; i < verticesCount; ++i) {
+        matrix[i].resize(verticesCount, 0);
+    }
+}
+
+MatrixGraph::MatrixGraph(const IGraph& graph) {
+    matrix.resize(graph.VerticesCount());
+    for (int i = 0; i < graph.VerticesCount(); ++i) {
+        matrix[i].resize(graph.VerticesCount(), 0);
     }
 
-    MatrixGraph(int verticesCount) {
-        matrix.resize(verticesCount);
-        for (int i = 0; i < verticesCount ++i) {
-            matrix[i].resize(verticesCount, 0);
+
+    for (int i = 0; i < matrix.size(); ++i) {
+        std::vector<int> ithNextVertices = graph.GetNextVertices(i);
+
+        for (int j = 0; j < ithNextVertices.size(); ++j) {
+            matrix[i][ithNextVertices[j]] = 1;
+        }
+    }
+}
+
+
+void MatrixGraph::AddEdge(int from, int to) {
+    assert(0 <= from && from < matrix.size());
+    assert(0 <= to && to < matrix.size());
+
+    matrix[from][to] = 1;
+}
+
+
+int MatrixGraph::VerticesCount() const {
+    return matrix.size();
+}
+
+
+
+std::vector<int> MatrixGraph::GetNextVertices(int vertex) const {
+    assert(0 <= vertex && vertex < matrix.size());
+
+    std::vector<int> nextVertices;
+
+    for (int i = 0; i < matrix.size(); ++i) {
+        if (matrix[vertex][i]) {
+            nextVertices.push_back(i);
         }
     }
 
-    MatrixGraph(const IGraph& graph) {
-        matrix.resize(graph.VerticesCount);
-        for (int i = 0; i < graph.VerticesCount ++i) {
-            matrix[i].resize(graph.VerticesCount, 0);
+    return nextVertices;
+}
+
+std::vector<int> MatrixGraph::GetPrevVertices(int vertex) const {
+    assert(0 <= vertex && vertex < matrix.size());
+
+    std::vector<int> nextVertices;
+
+    for (int i = 0; i < matrix.size(); ++i) {
+        if (matrix[i][vertex]) {
+            nextVertices.push_back(i);
         }
-
-        for (int i = 0; i < matrix.size(); ++i) {
-            std::vector<int> ithNextVertices = graph.graph.GetNextVertices(i);
-
-            for (int j = 0; j < ithNextVertices.size(); ++j) {
-                matrix[i][j] = 1;
-            }
-        }
     }
 
-
-    void AddEdge(int from, int to) override {
-        assert(0 <= from && from < matrix.size());
-        assert(0 <= to && to < matrix.size());
-
-        matrix[from][to] = 1;
-    }
-
-
-    int VerticesCount() const override {
-        return matrix.size();
-    }
-
-
-
-    std::vector<int> GetNextVertices(int vertex) const override {
-        assert(0 <= vertex && vertex < matrix.size());
-
-        std::vector<int> nextVertices;
-
-        for (i = 0; i < matrix.size(); ++i) {
-            if (matrix[vertex][i]) {
-                nextVertices.push_back();
-            }
-        }
-
-        return nextVertices;
-    }
-
-    std::vector<int> GetPrevVertices(int vertex) const override {
-        assert(0 <= vertex && vertex < matrix.size());
-
-        std::vector<int> nextVertices;
-
-        for (i = 0; i < matrix.size(); ++i) {
-            if (matrix[i][vertex]) {
-                nextVertices.push_back();
-            }
-        }
-
-        return nextVertices;
-    }
-
-
-private:
-    std::vector<std::vector<int>> matrix;
-};
+    return nextVertices;
+}

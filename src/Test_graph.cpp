@@ -6,14 +6,17 @@
 #include <string>
 #include "test_graph.h"
 #include "IGraph.h"
+#include <iostream>
 
-
-std::vector<std::ostream> TestGraph::Test(const IGraph& graph) {
+std::vector<std::string> TestGraph::Test(const IGraph& graph) {
     std::vector<std::string> results;
+
 
     results.push_back(BFS(graph));
     results.push_back(DFS(graph));
     results.push_back(TopologicalSort(graph));
+
+    return results;
 }
 
 
@@ -55,7 +58,7 @@ std::string TestGraph::BFS(const IGraph& graph) {
 
 void TestGraph::DFS(const IGraph & graph, int vertex, std::vector<bool>&visited, std::string & order) {
     visited[vertex] = true;
-    order = order + vertex + " ";
+    order = order + std::to_string(vertex) + " ";
 
     for (int nextVertex : graph.GetNextVertices(vertex))
     {
@@ -85,7 +88,7 @@ void TestGraph::TopologicalSort(const IGraph& graph, int vertex, std::vector<boo
 
     for (int nextVertex : graph.GetNextVertices(vertex)) {
         if (!visited[nextVertex]) {
-            topologicalSort(graph, nextVertex, visited, sorted);
+            TopologicalSort(graph, nextVertex, visited, sorted);
         }
     }
 
@@ -98,15 +101,15 @@ std::string TestGraph::TopologicalSort(const IGraph& graph) {
 
     for (int i = 0; i < graph.VerticesCount(); ++i) {
         if (!visited[i]) {
-            topologicalSort(graph, i, visited, sorted);
+            TopologicalSort(graph, i, visited, sorted);
         }
     }
 
-
     std::string result("");
 
-    for (int vertex : topologicalSort(listGraph)) {
-        result = result + vertex + " ";
+    while (!sorted.empty()) {
+        result = result + std::to_string(sorted.front()) + " ";
+        sorted.pop_front();
     }
 
     return result;

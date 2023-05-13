@@ -1,73 +1,67 @@
 #include <vector>
 #include <cassert>
-#include "IGraph.h"
+#include "arc_graph.h"
 
 
-struct ArcGraph : public IGraph {
-public:
-    ~ArcGraph() {
+ArcGraph::~ArcGraph() {
     
+}
+
+ArcGraph::ArcGraph(const IGraph& graph) {
+    verticesCount = graph.VerticesCount();
+
+    for (int i = 0; i < verticesCount; ++i) {
+        std::vector<int> ithArcs = graph.GetNextVertices(i);
+
+        for (int j = 0; j < ithArcs.size(); ++j) {
+            std::pair<int, int> pair(i, ithArcs[j]);
+            arcs.push_back(pair);
+        }
     }
+}
 
-    ArcGraph(const IGraph& graph) {
-        verticesCount = graph.VerticesCount();
+ArcGraph::ArcGraph(int verticesCount) {
+    this->verticesCount = verticesCount;
+}
 
-        for (int i = 0; i < verticesCount; ++i) {
-            std::vector<int> ithArcs = graph.GetNextVertices(i);
+void ArcGraph::AddEdge(int from, int to) {
+    assert(0 <= from && from < verticesCount);
+    assert(0 <= to && to < verticesCount);
 
-            for (int j = 0; j < ithArcs.size(); ++j) {
-                arcs.push_back(i, ithArcs[j]);
-            }
+    std::pair<int, int> pair(from, to);
+    arcs.push_back(pair);
+}
+
+
+int ArcGraph::VerticesCount() const {
+    return verticesCount;
+}
+
+
+std::vector<int> ArcGraph::GetNextVertices(int vertex) const {
+    assert(0 <= vertex && vertex < verticesCount);
+
+    std::vector<int> nextVerices;
+
+    for (int i = 0; i < arcs.size(); ++i) {
+        if (arcs[i].first == vertex) {
+            nextVerices.push_back(arcs[i].second);
         }
     }
 
-    ArcGraph(const int verticesCount) {
-        this->verticesCount = verticesCount;
-    }
+    return nextVerices;
+}
 
-    void AddEdge(int from, int to) override {
-        assert(0 <= from && from < verticesCount);
-        assert(0 <= to && to < verticesCount);
+std::vector<int> ArcGraph::GetPrevVertices(int vertex) const {
+    assert(0 <= vertex && vertex < verticesCount);
 
-        arcs.push_back(from, to);
-    }
+    std::vector<int> prevVerices;
 
-
-    int VerticesCount() const override {
-        return verticesCount;
-    }
-
-
-    std::vector<int> GetNextVertices(int vertex) const override {
-        assert(0 <= vertex && vertex < verticesCount);
-
-        std::vector<int> nextVerices;
-
-        for (int i = 0; i < arcs.size(); ++i) {
-            if (arcs[i].first == vertex) {
-                nextVerices.push_back(arcs[i].second);
-            }
+    for (int i = 0; i < arcs.size(); ++i) {
+        if (arcs[i].second == vertex) {
+            prevVerices.push_back(arcs[i].first);
         }
-
-        return nextVerices;
     }
 
-    std::vector<int> GetPrevVertices(int vertex) const override {
-        assert(0 <= vertex && vertex < verticesCount);
-
-        std::vector<int> prevVerices;
-
-        for (int i = 0; i < arcs.size(); ++i) {
-            if (arcs[i].second == vertex) {
-                prevVerices.push_back(arcs[i].first);
-            }
-        }
-
-        return nextVerices;
-    }
-
-
-private:
-    std::vector<std::pair<int, int>> arcs;
-    int verticesCount;
-};
+    return prevVerices;
+}

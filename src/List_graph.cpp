@@ -1,60 +1,55 @@
 #include <vector>
 #include <cassert>
-#include "IGraph.h"
+#include "list_graph.h"
 
-struct ListGraph : public IGraph {
-public:
-    ListGraph(int size) {
-        adjacencyLists(size);
+
+ListGraph::ListGraph(int size) {
+    adjacencyLists.resize(size);
+}
+
+ListGraph::ListGraph(const IGraph& graph) {
+    adjacencyLists.resize(graph.VerticesCount());
+    for (int i = 0; i < graph.VerticesCount(); ++i){
+        adjacencyLists[i] = graph.GetNextVertices(i);
     }
-    ListGraph(const IGraph& graph) {
-        adjacencyLists(graph.VerticesCount());
-        for (int i = 0; i < graph.VerticesCount(); ++i){
-            adjacencyLists[i] = graph.GetNextVertices(i);
-        }
-    }
+}
 
 
-    ~ListGraph() {
+ListGraph::~ListGraph() {
 
-    }
-
-
-    void AddEdge(int from, int to) override {
-        assert(0 <= from && from < adjacencyLists.size());
-        assert(0 <= to && to < adjacencyLists.size());
-
-        adjacencyLists[from].push_back(to);
-    }
+}
 
 
-    int VerticesCount() const override {
-        return static_cast<int>(adjacencyLists.size());
-    }
+void ListGraph::AddEdge(int from, int to) {
+    assert(0 <= from && from < adjacencyLists.size());
+    assert(0 <= to && to < adjacencyLists.size());
+
+    adjacencyLists[from].push_back(to);
+}
 
 
-    std::vector<int> GetNextVertices(int vertex) const override {
-        assert(0 <= vertex && vertex < adjacencyLists.size());
+int ListGraph::VerticesCount() const {
+    return static_cast<int>(adjacencyLists.size());
+}
 
-        return adjacencyLists[vertex];
-    }
 
-    std::vector<int> GetPrevVertices(int vertex) const override {
-        assert(0 <= vertex && vertex < adjacencyLists.size());
+std::vector<int> ListGraph::GetNextVertices(int vertex) const {
+    assert(0 <= vertex && vertex < adjacencyLists.size());
 
-        std::vector<int> prevVertices;
+    return adjacencyLists[vertex];
+}
 
-        for (int from = 0; from < adjacencyLists.size(); ++from) {
-            for (int to : adjacencyLists[from]) {
-                if (to == vertex) {
-                    prevVertices.push_back(from);
-                }
+std::vector<int> ListGraph::GetPrevVertices(int vertex) const {
+    assert(0 <= vertex && vertex < adjacencyLists.size());
+
+    std::vector<int> prevVertices;
+
+    for (int from = 0; from < adjacencyLists.size(); ++from) {
+        for (int to : adjacencyLists[from]) {
+            if (to == vertex) {
+                prevVertices.push_back(from);
             }
         }
-        return prevVertices;
     }
-
-
-private:
-    std::vector<std::vector<int>> adjacencyLists;
-};
+    return prevVertices;
+}

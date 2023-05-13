@@ -1,0 +1,15 @@
+E:/Git/ASD/build/CMakeFiles/Main.dir
+E:/Git/ASD/build/CMakeFiles/Tests.dir
+E:/Git/ASD/build/CMakeFiles/INSTALL.dir
+E:/Git/ASD/build/CMakeFiles/ALL_BUILD.dir
+E:/Git/ASD/build/CMakeFiles/ZERO_CHECK.dir
+E:/Git/ASD/build/googletest/CMakeFiles/INSTALL.dir
+E:/Git/ASD/build/googletest/CMakeFiles/ALL_BUILD.dir
+E:/Git/ASD/build/googletest/googlemock/CMakeFiles/gmock.dir
+E:/Git/ASD/build/googletest/googlemock/CMakeFiles/gmock_main.dir
+E:/Git/ASD/build/googletest/googlemock/CMakeFiles/INSTALL.dir
+E:/Git/ASD/build/googletest/googlemock/CMakeFiles/ALL_BUILD.dir
+E:/Git/ASD/build/googletest/googletest/CMakeFiles/gtest.dir
+E:/Git/ASD/build/googletest/googletest/CMakeFiles/gtest_main.dir
+E:/Git/ASD/build/googletest/googletest/CMakeFiles/INSTALL.dir
+E:/Git/ASD/build/googletest/googletest/CMakeFiles/ALL_BUILD.dir
