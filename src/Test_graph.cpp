@@ -17,6 +17,7 @@ std::vector<std::ostream> TestGraph::Test(const IGraph& graph) {
 }
 
 
+
 void TestGraph::BFS(const IGraph& graph, int vertex, std::vector<bool>& visited, std::string& order) {
     std::queue<int> qu;
     qu.push(vertex);
@@ -41,7 +42,7 @@ std::string TestGraph::BFS(const IGraph& graph) {
     std::vector<bool> visited(graph.VerticesCount(), false);
     std::string result("");
 
-    for (int i = 0; i < graph.VerticesCount(); i++) {
+    for (int i = 0; i < graph.VerticesCount(); ++i) {
         if (!visited[i]) {
             BFS(graph, i, visited, result);
         }
@@ -50,3 +51,63 @@ std::string TestGraph::BFS(const IGraph& graph) {
     return result;
 }
 
+
+
+void TestGraph::DFS(const IGraph & graph, int vertex, std::vector<bool>&visited, std::string & order) {
+    visited[vertex] = true;
+    order = order + vertex + " ";
+
+    for (int nextVertex : graph.GetNextVertices(vertex))
+    {
+        if (!visited[nextVertex])
+            DFS(graph, nextVertex, visited, order);
+    }
+}
+
+std::string TestGraph::DFS(const IGraph& graph) {
+    std::string result("");
+    std::vector<bool> visited(graph.VerticesCount(), false);
+
+    for (int i = 0; i < graph.VerticesCount(); ++i) {
+        if (!visited[i]) {
+            DFS(graph, i, visited, result);
+        }
+    }
+
+
+    return result;
+}
+
+
+
+void TestGraph::TopologicalSort(const IGraph& graph, int vertex, std::vector<bool>& visited, std::deque<int>& sorted) {
+    visited[vertex] = true;
+
+    for (int nextVertex : graph.GetNextVertices(vertex)) {
+        if (!visited[nextVertex]) {
+            topologicalSort(graph, nextVertex, visited, sorted);
+        }
+    }
+
+    sorted.push_front(vertex);
+}
+
+std::string TestGraph::TopologicalSort(const IGraph& graph) {
+    std::deque<int> sorted;
+    std::vector<bool> visited(graph.VerticesCount(), false);
+
+    for (int i = 0; i < graph.VerticesCount(); ++i) {
+        if (!visited[i]) {
+            topologicalSort(graph, i, visited, sorted);
+        }
+    }
+
+
+    std::string result("");
+
+    for (int vertex : topologicalSort(listGraph)) {
+        result = result + vertex + " ";
+    }
+
+    return result;
+}
